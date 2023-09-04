@@ -28,6 +28,23 @@ This is a project created to learn [Nest](https://github.com/nestjs/nest) framew
 
 ## Installation
 
+1. Create `.env` file with your database credentials. You can use `.env.example` as a template.
+
+```
+DB_PORT=
+DB_NAME=
+DB_USERNAME=
+DB_PASSWORD=
+```
+
+2. Create database with `docker-compose`.
+
+```bash
+$ docker-compose up -d
+```
+
+3. Install [pnpm](https://pnpm.io/) package manager
+
 ```bash
 $ pnpm install
 ```
