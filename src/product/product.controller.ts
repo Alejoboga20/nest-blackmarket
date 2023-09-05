@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   ParseUUIDPipe,
+  Delete,
 } from '@nestjs/common';
 
 import { CreateProductDto } from './dto';
@@ -38,5 +39,10 @@ export class ProductController {
     @Body() updateProductDto: CreateProductDto,
   ) {
     return this.productService.update(id, updateProductDto);
+  }
+
+  @Delete(':id')
+  delete(@Param('id', ParseUUIDPipe) id: string) {
+    return this.productService.remove(id);
   }
 }
