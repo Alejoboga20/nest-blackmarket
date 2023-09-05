@@ -39,7 +39,7 @@ export class ProductService {
       take: limit,
       skip: offset,
       order: {
-        created_at: sort,
+        createdAt: sort,
       },
     });
   }

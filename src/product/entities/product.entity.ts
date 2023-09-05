@@ -18,15 +18,15 @@ export class Product {
   @Column('text')
   description: string;
 
-  @Column('numeric')
-  num_available_items: number;
+  @Column('numeric', { name: 'num_available_items' })
+  numAvailableItems: number;
 
-  @Column('numeric')
-  unit_price: number;
+  @Column('numeric', { name: 'unit_price' })
+  unitPrice: number;
 
   @Column('text')
   state: ProductState;
 
-  @CreateDateColumn({ type: 'timestamp' })
-  created_at: Date;
+  @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
+  createdAt: Date;
 }
