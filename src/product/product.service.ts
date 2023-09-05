@@ -53,6 +53,22 @@ export class ProductService {
     }
   }
 
+  async update(id: string, updateProductDto: CreateProductDto) {
+    const product = await this.productRepository.preload({
+      id,
+      ...updateProductDto,
+    });
+
+    if (!product) throw new BadRequestException('Product not found');
+
+    try {
+      await this.productRepository.save(product);
+      return product;
+    } catch (error) {
+      this.handleDbError(error);
+    }
+  }
+
   private handleDbError(error: any) {
     if (error.code === '23505') throw new BadRequestException(error.detail);
 
