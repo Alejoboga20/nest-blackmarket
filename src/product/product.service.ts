@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { validate as isUUID } from 'uuid';
 
 import { CreateProductDto } from './dto';
 import { Product } from './entities/product.entity';
@@ -16,6 +17,20 @@ export class ProductService {
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
   ) {}
+
+  async findOne(searchTerm: string) {
+    let product: Product;
+
+    if (isUUID(searchTerm)) {
+      product = await this.productRepository.findOneBy({ id: searchTerm });
+    } else {
+      product = await this.productRepository.findOneBy({ name: searchTerm });
+    }
+
+    if (!product) throw new BadRequestException('Product not found');
+
+    return product;
+  }
 
   async findAll(paginationDto: PaginationDto) {
     const { limit, offset, sort } = paginationDto;

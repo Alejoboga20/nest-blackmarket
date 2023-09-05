@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Query } from '@nestjs/common';
+import { Controller, Post, Body, Get, Query, Param } from '@nestjs/common';
 
 import { CreateProductDto } from './dto';
 import { ProductService } from './product.service';
@@ -7,6 +7,11 @@ import { PaginationDto } from 'src/common/dto/pagination.dto';
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
+
+  @Get(':searchTerm')
+  findOne(@Param('searchTerm') searchTerm: string) {
+    return this.productService.findOne(searchTerm);
+  }
 
   @Get()
   findAll(@Query() paginationDto: PaginationDto) {
