@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -18,7 +19,7 @@ export class ProductService {
     private readonly productRepository: Repository<Product>,
   ) {}
 
-  async findOne(searchTerm: string) {
+  async findOne(searchTerm: string): Promise<Product> {
     let product: Product;
 
     if (isUUID(searchTerm)) {
@@ -27,39 +28,50 @@ export class ProductService {
       product = await this.productRepository.findOneBy({ name: searchTerm });
     }
 
-    if (!product) throw new BadRequestException('Product not found');
+    if (!product) throw new NotFoundException();
 
     return product;
   }
 
-  async findAll(paginationDto: PaginationDto) {
+  async findAll(paginationDto: PaginationDto): Promise<Product[]> {
     const { limit = 10, offset = 0, sort = 'DESC' } = paginationDto;
 
-    return await this.productRepository.find({
-      take: limit,
-      skip: offset,
-      order: {
-        createdAt: sort,
-      },
-    });
-  }
-
-  async create(createProductDto: CreateProductDto) {
     try {
-      const product = this.productRepository.create(createProductDto);
-      return await this.productRepository.save(product);
+      const products = await this.productRepository.find({
+        take: limit,
+        skip: offset,
+        order: {
+          createdAt: sort,
+        },
+      });
+
+      return products;
     } catch (error) {
       this.handleDbError(error);
     }
   }
 
-  async update(id: string, updateProductDto: CreateProductDto) {
+  async create(createProductDto: CreateProductDto): Promise<Product> {
+    try {
+      const product = this.productRepository.create(createProductDto);
+      await this.productRepository.save(product);
+
+      return product;
+    } catch (error) {
+      this.handleDbError(error);
+    }
+  }
+
+  async update(
+    id: string,
+    updateProductDto: CreateProductDto,
+  ): Promise<Product> {
     const product = await this.productRepository.preload({
       id,
       ...updateProductDto,
     });
 
-    if (!product) throw new BadRequestException('Product not found');
+    if (!product) throw new NotFoundException();
 
     try {
       await this.productRepository.save(product);
@@ -69,7 +81,7 @@ export class ProductService {
     }
   }
 
-  async remove(id: string) {
+  async remove(id: string): Promise<void> {
     const product = await this.findOne(id);
     await this.productRepository.remove(product);
   }
@@ -77,6 +89,6 @@ export class ProductService {
   private handleDbError(error: any) {
     if (error.code === '23505') throw new BadRequestException(error.detail);
 
-    throw new InternalServerErrorException('Internal Server Error');
+    throw new InternalServerErrorException();
   }
 }

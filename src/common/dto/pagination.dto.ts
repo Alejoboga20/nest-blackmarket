@@ -1,6 +1,6 @@
 import { IsIn, IsInt, IsNumber, IsOptional, IsPositive } from 'class-validator';
 import { Type } from 'class-transformer';
-import { FindOptionsOrderValue } from 'typeorm';
+import { Sorting } from '../types/pagination';
 
 export class PaginationDto {
   @Type(() => Number)
@@ -17,7 +17,7 @@ export class PaginationDto {
   @IsOptional()
   offset?: number;
 
-  @IsIn(['ASC', 'DESC', 'asc', 'desc'])
+  @IsIn(Object.values(Sorting))
   @IsOptional()
-  sort?: FindOptionsOrderValue;
+  sort?: Sorting;
 }

@@ -1,17 +1,10 @@
-import {
-  Column,
-  Entity,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-} from 'typeorm';
+import { Column, Entity } from 'typeorm';
 
 import { ProductState } from '../types/product';
+import { BaseEntity } from 'src/common/entities/base.entity';
 
 @Entity('products')
-export class Product {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class Product extends BaseEntity {
   @Column('text', { unique: true })
   name: string;
 
@@ -26,7 +19,4 @@ export class Product {
 
   @Column('text')
   state: ProductState;
-
-  @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
-  createdAt: Date;
 }

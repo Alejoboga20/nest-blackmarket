@@ -18,11 +18,11 @@ export class CreateProductDto {
   @IsNumber()
   @IsInt()
   @Min(0)
-  num_available_items: number;
+  numAvailableItems: number;
 
   @IsNumber()
   @IsPositive()
-  unit_price: number;
+  unitPrice: number;
 
   @IsString()
   @IsIn(Object.values(ProductState))
