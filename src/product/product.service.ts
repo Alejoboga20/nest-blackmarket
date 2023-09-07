@@ -7,10 +7,10 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { validate as isUUID } from 'uuid';
 
-import { CreateProductDto } from './dto';
+import { CreateProductDto, UpdateProductDto } from './dto';
 import { Product } from './entities/product.entity';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { ErrorCodes } from 'src/common/types/error';
+import { PaginationDto } from '../common/dto/pagination.dto';
+import { ErrorCodes } from '../common/types/error';
 import { ProductRepository } from './repositories/product.repository';
 
 @Injectable()
@@ -65,7 +65,7 @@ export class ProductService {
 
   async update(
     id: string,
-    updateProductDto: CreateProductDto,
+    updateProductDto: UpdateProductDto,
   ): Promise<Product> {
     const product = await this.productRepository.preload({
       id,
