@@ -10,7 +10,8 @@ import { validate as isUUID } from 'uuid';
 
 import { CreateProductDto } from './dto';
 import { Product } from './entities/product.entity';
-import { PaginationDto } from '../common/dto/pagination.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { ErrorCodes } from 'src/common/types/error';
 
 @Injectable()
 export class ProductService {
@@ -87,7 +88,8 @@ export class ProductService {
   }
 
   private handleDbError(error: any) {
-    if (error.code === '23505') throw new BadRequestException(error.detail);
+    if (error.code === ErrorCodes.DUPLICATED_ENTITY)
+      throw new BadRequestException(error.detail);
 
     throw new InternalServerErrorException();
   }
