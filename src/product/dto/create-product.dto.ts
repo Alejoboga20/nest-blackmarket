@@ -1,5 +1,5 @@
 import {
-  IsIn,
+  IsEnum,
   IsInt,
   IsNumber,
   IsPositive,
@@ -25,6 +25,6 @@ export class CreateProductDto {
   unitPrice: number;
 
   @IsString()
-  @IsIn(Object.values(ProductState))
+  @IsEnum(ProductState)
   state: ProductState;
 }

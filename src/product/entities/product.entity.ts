@@ -17,6 +17,6 @@ export class Product extends BaseEntity {
   @Column('numeric', { name: 'unit_price' })
   unitPrice: number;
 
-  @Column('text')
+  @Column({ type: 'enum', enum: ProductState })
   state: ProductState;
 }
