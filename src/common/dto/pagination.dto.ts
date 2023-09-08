@@ -1,4 +1,10 @@
-import { IsIn, IsInt, IsNumber, IsOptional, IsPositive } from 'class-validator';
+import {
+  IsEnum,
+  IsInt,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 import { Sorting } from '../types/pagination';
 
@@ -17,7 +23,7 @@ export class PaginationDto {
   @IsOptional()
   offset?: number;
 
-  @IsIn(Object.values(Sorting))
+  @IsEnum(Sorting)
   @IsOptional()
   sort?: Sorting;
 }
