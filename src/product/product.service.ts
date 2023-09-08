@@ -4,7 +4,6 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { validate as isUUID } from 'uuid';
 
 import { CreateProductDto, UpdateProductDto } from '@product/dto';
@@ -15,10 +14,7 @@ import { ErrorCodes } from '@common/types/error';
 
 @Injectable()
 export class ProductService {
-  constructor(
-    @InjectRepository(Product)
-    private readonly productRepository: ProductRepository,
-  ) {}
+  constructor(private readonly productRepository: ProductRepository) {}
 
   async findOne(searchTerm: string): Promise<Product> {
     let product: Product;
@@ -48,6 +44,7 @@ export class ProductService {
 
       return products;
     } catch (error) {
+      console.log({ error });
       this.handleDbError(error);
     }
   }
