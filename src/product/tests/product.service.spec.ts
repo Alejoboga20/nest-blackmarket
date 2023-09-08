@@ -4,7 +4,6 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
 import { v4 as uuid } from 'uuid';
 
 import { ProductService } from '@product/product.service';
@@ -15,27 +14,19 @@ import {
   createProductDto,
   updateProductDto,
   mockProduct,
+  mockRepository,
 } from './product.mock';
+import { ProductRepository } from '../repositories/product.repository';
 
 describe('ProductService', () => {
   let service: ProductService;
-  let mockRepository;
 
   beforeEach(async () => {
-    mockRepository = {
-      findOneBy: jest.fn(),
-      find: jest.fn(),
-      create: jest.fn(),
-      save: jest.fn(),
-      preload: jest.fn(),
-      remove: jest.fn(),
-    };
-
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ProductService,
         {
-          provide: getRepositoryToken(Product),
+          provide: ProductRepository,
           useValue: mockRepository,
         },
       ],
@@ -93,7 +84,7 @@ describe('ProductService', () => {
 
     it('should throw BadRequestException when name is duplicated', async () => {
       mockRepository.create.mockReturnValueOnce({ ...createProductDto });
-      mockRepository.save.mockRejectedValue({
+      mockRepository.save.mockRejectedValueOnce({
         code: ErrorCodes.DUPLICATED_ENTITY,
       });
 
