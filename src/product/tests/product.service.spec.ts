@@ -174,7 +174,9 @@ describe('ProductService', () => {
         numAvailableItems: 10,
         unitPrice: 10,
         createdAt: new Date(),
+        updatedAt: new Date(),
       };
+
       service.findOne = jest.fn().mockResolvedValue(mockProduct);
       mockRepository.remove.mockResolvedValue(undefined);
 
