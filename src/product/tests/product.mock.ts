@@ -1,4 +1,5 @@
 import { v4 as uuid } from 'uuid';
+import { faker } from '@faker-js/faker';
 
 import { PaginationDto } from '@src/common/dto/pagination.dto';
 import { Sorting } from '@src/common/types/pagination';
@@ -8,29 +9,29 @@ import { Product } from '@product/entities/product.entity';
 
 export const mockProduct: Product = {
   id: uuid(),
-  name: 'someName',
-  description: 'someDescription',
+  name: faker.commerce.productName(),
+  description: faker.commerce.productDescription(),
   state: ProductState.N,
-  numAvailableItems: 10,
-  unitPrice: 10,
+  numAvailableItems: faker.number.int({ min: 1, max: 100 }),
+  unitPrice: faker.number.int({ min: 1, max: 100 }),
   createdAt: new Date(),
   updatedAt: new Date(),
 };
 
 export const createProductDto: CreateProductDto = {
-  name: 'someName',
-  description: 'someDescription',
+  name: faker.commerce.productName(),
+  description: faker.commerce.productDescription(),
   state: ProductState.N,
-  numAvailableItems: 10,
-  unitPrice: 10,
+  numAvailableItems: faker.number.int({ min: 1, max: 100 }),
+  unitPrice: faker.number.int({ min: 1, max: 100 }),
 };
 
 export const updateProductDto: UpdateProductDto = {
-  name: 'newName',
-  description: 'newDescription',
+  name: faker.commerce.productName(),
+  description: faker.commerce.productDescription(),
   state: ProductState.N,
-  numAvailableItems: 20,
-  unitPrice: 20,
+  numAvailableItems: faker.number.int({ min: 1, max: 100 }),
+  unitPrice: faker.number.int({ min: 1, max: 100 }),
 };
 
 export const paginationDto: PaginationDto = {
