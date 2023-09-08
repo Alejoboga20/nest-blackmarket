@@ -7,13 +7,15 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { v4 as uuid } from 'uuid';
 
-import { ProductService } from '../product.service';
-import { Product } from '../entities/product.entity';
-import { CreateProductDto, UpdateProductDto } from '../dto';
-import { ProductState } from '../types/product';
-import { Sorting } from '../../common/types/pagination';
-import { PaginationDto } from '../../common/dto/pagination.dto';
-import { ErrorCodes } from '../../common/types/error';
+import { ProductService } from '@product/product.service';
+import { Product } from '@product/entities/product.entity';
+import { ErrorCodes } from '@common/types/error';
+import {
+  paginationDto,
+  createProductDto,
+  updateProductDto,
+  mockProduct,
+} from './product.mock';
 
 describe('ProductService', () => {
   let service: ProductService;
@@ -65,13 +67,8 @@ describe('ProductService', () => {
   describe('findAll', () => {
     it('should return an array of products', async () => {
       const product = new Product();
-      mockRepository.find.mockReturnValueOnce([product]);
 
-      const paginationDto: PaginationDto = {
-        limit: 10,
-        offset: 0,
-        sort: Sorting.DESC,
-      };
+      mockRepository.find.mockReturnValueOnce([product]);
       const result = await service.findAll(paginationDto);
 
       expect(result).toEqual([product]);
@@ -80,11 +77,6 @@ describe('ProductService', () => {
     it('should handle database errors', () => {
       mockRepository.find.mockRejectedValue({ code: 'someDbError' });
 
-      const paginationDto: PaginationDto = {
-        limit: 10,
-        offset: 0,
-        sort: Sorting.DESC,
-      };
       expect(service.findAll(paginationDto)).rejects.toThrow(
         InternalServerErrorException,
       );
@@ -92,18 +84,10 @@ describe('ProductService', () => {
   });
 
   describe('create', () => {
-    const createProductDto: CreateProductDto = {
-      name: 'someName',
-      description: 'someDescription',
-      state: ProductState.N,
-      numAvailableItems: 10,
-      unitPrice: 10,
-    };
-
     it('should return a product if it was created', async () => {
       mockRepository.create.mockReturnValueOnce({ ...createProductDto });
-
       const result = await service.create(createProductDto);
+
       expect(result).toEqual(createProductDto);
     });
 
@@ -121,13 +105,6 @@ describe('ProductService', () => {
 
   describe('update', () => {
     const id = uuid();
-    const updateProductDto: UpdateProductDto = {
-      name: 'newName',
-      description: 'newDescription',
-      state: ProductState.N,
-      numAvailableItems: 20,
-      unitPrice: 20,
-    };
 
     it('should return a product if it was successfully updated', async () => {
       mockRepository.preload.mockReturnValueOnce({
@@ -163,34 +140,23 @@ describe('ProductService', () => {
   });
 
   describe('remove', () => {
-    const id = uuid();
-
     it('should successfully remove a product when it exists', async () => {
-      const mockProduct: Product = {
-        id,
-        name: 'someName',
-        description: 'someDescription',
-        state: ProductState.N,
-        numAvailableItems: 10,
-        unitPrice: 10,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-
       service.findOne = jest.fn().mockResolvedValue(mockProduct);
       mockRepository.remove.mockResolvedValue(undefined);
 
-      await expect(service.remove(id)).resolves.toBeUndefined();
+      await expect(service.remove(mockProduct.id)).resolves.toBeUndefined();
 
-      expect(service.findOne).toHaveBeenCalledWith(id);
+      expect(service.findOne).toHaveBeenCalledWith(mockProduct.id);
       expect(mockRepository.remove).toHaveBeenCalledWith(mockProduct);
     });
 
     it('should throw NotFoundException when the product does not exist', async () => {
       service.findOne = jest.fn().mockRejectedValue(new NotFoundException());
 
-      await expect(service.remove(id)).rejects.toThrow(NotFoundException);
-      expect(service.findOne).toHaveBeenCalledWith(id);
+      await expect(service.remove(mockProduct.id)).rejects.toThrow(
+        NotFoundException,
+      );
+      expect(service.findOne).toHaveBeenCalledWith(mockProduct.id);
     });
   });
 });
