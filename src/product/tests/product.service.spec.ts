@@ -49,14 +49,14 @@ describe('ProductService', () => {
   describe('findOne', () => {
     it('should return a product if it exists', async () => {
       const product = new Product();
-      mockRepository.findOneBy.mockReturnValue(product);
+      mockRepository.findOneBy.mockReturnValueOnce(product);
 
       const result = await service.findOne('someTerm');
       expect(result).toEqual(product);
     });
 
     it('should throw NotFoundException if product does not exist', () => {
-      mockRepository.findOneBy.mockReturnValue(null);
+      mockRepository.findOneBy.mockReturnValueOnce(null);
 
       expect(service.findOne('someTerm')).rejects.toThrow(NotFoundException);
     });
@@ -65,7 +65,7 @@ describe('ProductService', () => {
   describe('findAll', () => {
     it('should return an array of products', async () => {
       const product = new Product();
-      mockRepository.find.mockReturnValue([product]);
+      mockRepository.find.mockReturnValueOnce([product]);
 
       const paginationDto: PaginationDto = {
         limit: 10,
@@ -101,14 +101,14 @@ describe('ProductService', () => {
     };
 
     it('should return a product if it was created', async () => {
-      mockRepository.create.mockReturnValue({ ...createProductDto });
+      mockRepository.create.mockReturnValueOnce({ ...createProductDto });
 
       const result = await service.create(createProductDto);
       expect(result).toEqual(createProductDto);
     });
 
     it('should throw BadRequestException when name is duplicated', async () => {
-      mockRepository.create.mockReturnValue({ ...createProductDto });
+      mockRepository.create.mockReturnValueOnce({ ...createProductDto });
       mockRepository.save.mockRejectedValue({
         code: ErrorCodes.DUPLICATED_ENTITY,
       });
@@ -130,7 +130,7 @@ describe('ProductService', () => {
     };
 
     it('should return a product if it was successfully updated', async () => {
-      mockRepository.preload.mockReturnValue({
+      mockRepository.preload.mockReturnValueOnce({
         ...updateProductDto,
         id,
       });
@@ -140,7 +140,7 @@ describe('ProductService', () => {
     });
 
     it('should throw NotFoundException when the product is not found', async () => {
-      mockRepository.preload.mockReturnValue(undefined);
+      mockRepository.preload.mockReturnValueOnce(undefined);
 
       await expect(service.update(id, updateProductDto)).rejects.toThrow(
         NotFoundException,
@@ -148,7 +148,7 @@ describe('ProductService', () => {
     });
 
     it('should throw BadRequestException when name is duplicated', async () => {
-      mockRepository.preload.mockReturnValue({
+      mockRepository.preload.mockReturnValueOnce({
         ...updateProductDto,
         id,
       });
