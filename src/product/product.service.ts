@@ -7,11 +7,11 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { validate as isUUID } from 'uuid';
 
-import { CreateProductDto, UpdateProductDto } from './dto';
-import { Product } from './entities/product.entity';
-import { PaginationDto } from '../common/dto/pagination.dto';
-import { ErrorCodes } from '../common/types/error';
-import { ProductRepository } from './repositories/product.repository';
+import { CreateProductDto, UpdateProductDto } from '@product/dto';
+import { Product } from '@product/entities/product.entity';
+import { ProductRepository } from '@product/repositories/product.repository';
+import { PaginationDto } from '@common/dto/pagination.dto';
+import { ErrorCodes } from '@common/types/error';
 
 @Injectable()
 export class ProductService {

@@ -10,9 +10,9 @@ import {
   Delete,
 } from '@nestjs/common';
 
-import { CreateProductDto, UpdateProductDto } from './dto';
-import { ProductService } from './product.service';
-import { PaginationDto } from '../common/dto/pagination.dto';
+import { CreateProductDto, UpdateProductDto } from '@product/dto';
+import { ProductService } from '@product/product.service';
+import { PaginationDto } from '@common/dto/pagination.dto';
 
 @Controller('product')
 export class ProductController {
