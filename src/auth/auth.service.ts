@@ -1,4 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
 import { CreateUserDto, LoginUserDto } from './dto';
@@ -6,7 +7,10 @@ import { UserRepository } from './repositories/user.repository';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly jwtService: JwtService,
+  ) {}
 
   async register(createUserDto: CreateUserDto) {
     const user = await this.userRepository.createUser(createUserDto);
@@ -30,6 +34,6 @@ export class AuthService {
 
     delete user.password;
 
-    return user;
+    return { ...user, token: this.jwtService.sign({ id: user.id }) };
   }
 }
