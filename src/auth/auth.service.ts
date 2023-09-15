@@ -2,38 +2,44 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
-import { CreateUserDto, LoginUserDto } from './dto';
-import { UserRepository } from './repositories/user.repository';
+import { UserService } from '@src/user/user.service';
+import { CreateUserDto } from '@src/user/dto/create-user.dto';
+import { LoginUserDto } from './dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userRepository: UserRepository,
+    private readonly userService: UserService,
     private readonly jwtService: JwtService,
   ) {}
 
   async register(createUserDto: CreateUserDto) {
-    const user = await this.userRepository.createUser(createUserDto);
+    const user = await this.userService.create(createUserDto);
 
-    return { ...user, token: this.jwtService.sign({ id: user.id }) };
+    return { ...user, token: this.generateJwtToken(user.id) };
   }
 
   async login(loginDto: LoginUserDto) {
     const { email, password } = loginDto;
-
-    const user = await this.userRepository.findOne({
-      where: { email },
-    });
+    const user = await this.userService.findOne(email);
 
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    if (!bcrypt.compareSync(password, user.password))
+    if (!this.isValidPassword(password, user.password))
       throw new UnauthorizedException('Invalid credentials');
 
     delete user.password;
 
-    return { ...user, token: this.jwtService.sign({ id: user.id }) };
+    return { ...user, token: this.generateJwtToken(user.id) };
+  }
+
+  private generateJwtToken(id: string) {
+    return this.jwtService.sign({ id });
+  }
+
+  private isValidPassword(password: string, hashedPassword: string) {
+    return bcrypt.compareSync(password, hashedPassword);
   }
 }

@@ -3,8 +3,8 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
+import { UserRepository } from '@src/user/repositories/user.repository';
 import { JwtPayload } from '../types/jwt.interface';
-import { UserRepository } from '../repositories/user.repository';
 
 enum MESSAGES {
   INVALID_TOKEN = 'Invalid Token',
