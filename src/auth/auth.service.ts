@@ -15,7 +15,7 @@ export class AuthService {
   async register(createUserDto: CreateUserDto) {
     const user = await this.userRepository.createUser(createUserDto);
 
-    return user;
+    return { ...user, token: this.jwtService.sign({ id: user.id }) };
   }
 
   async login(loginDto: LoginUserDto) {
