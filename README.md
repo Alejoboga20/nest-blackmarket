@@ -35,6 +35,8 @@ DB_PORT=
 DB_NAME=
 DB_USERNAME=
 DB_PASSWORD=
+
+JWT_SECRET=
 ```
 
 2. Create database with `docker-compose`.
