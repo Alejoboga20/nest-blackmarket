@@ -5,10 +5,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 
 import { UserService } from '@src/user/user.service';
 import { JwtPayload } from '@src/auth/types/jwt.interface';
-
-enum MESSAGES {
-  INVALID_TOKEN = 'Invalid Token',
-}
+import { jwtMessages } from '@src/common/constants/messages';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -26,7 +23,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const { id } = payload;
     const user = await this.userService.findOneById(id);
 
-    if (!user) throw new UnauthorizedException(MESSAGES.INVALID_TOKEN);
+    if (!user) throw new UnauthorizedException(jwtMessages.INVALID_TOKEN);
 
     return user;
   }
