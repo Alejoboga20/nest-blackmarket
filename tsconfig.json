@@ -21,6 +21,8 @@
       "@src/*": ["src/*"],
       "@common/*": ["src/common/*"],
       "@product/*": ["src/product/*"],
+      "@user/*": ["src/user/*"],
+      "@auth/*": ["src/auth/*"],
     }
   }
 }
