@@ -30,8 +30,6 @@ export class AuthService {
     if (!this.isValidPassword(password, user.password))
       throw new UnauthorizedException('Invalid credentials');
 
-    delete user.password;
-
     return { ...user, token: this.generateJwtToken(user.id) };
   }
 
