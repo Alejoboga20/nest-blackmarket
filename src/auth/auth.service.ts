@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
+import { authMessages } from '@common/constants/messages';
 import { UserService } from '@user/user.service';
 import { CreateUserDto } from '@user/dto/create-user.dto';
 import { LoginUserDto } from './dto';
@@ -24,11 +25,11 @@ export class AuthService {
     const user = await this.userService.findOne(email);
 
     if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException(authMessages.INVALID_CREDENTIALS);
     }
 
     if (!this.isValidPassword(password, user.password))
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException(authMessages.INVALID_CREDENTIALS);
 
     return { user, token: this.generateJwtToken(user.id) };
   }

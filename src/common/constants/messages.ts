@@ -2,6 +2,10 @@ export const jwtMessages = {
   INVALID_TOKEN: 'Invalid Token',
 };
 
+export const authMessages = {
+  INVALID_CREDENTIALS: 'Invalid credentials',
+};
+
 export const userMessages = {
   USER_NOT_FOUND: 'User not found',
   PASSWORD_VALIDATION_MESSAGE:
