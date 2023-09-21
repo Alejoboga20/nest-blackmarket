@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
 
 @Injectable()
 export class TransformInterceptor implements NestInterceptor {
-  intercept(_: ExecutionContext, next: CallHandler) {
+  intercept(_: ExecutionContext, next: CallHandler<any>) {
     return next.handle().pipe(map((data) => instanceToPlain(data)));
   }
 }
