@@ -10,12 +10,14 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { CreateProductDto, UpdateProductDto } from '@product/dto';
 import { ProductService } from '@product/product.service';
 import { PaginationDto } from '@common/dto/pagination.dto';
-import { JwtAuthGuard } from '@src/auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
 
+@ApiTags('Product')
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
