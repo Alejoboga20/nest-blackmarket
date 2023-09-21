@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
-import { userMessages } from '@common/constants/messages';
+import { userMessages } from '@src/common/constants/messages';
 import { UserRepository } from './repositories/user.repository';
 import { CreateUserDto } from './dto';
 
