@@ -76,3 +76,7 @@ $ pnpm run test:e2e
 # test coverage
 $ pnpm run test:cov
 ```
+
+## API Documentation
+
+API Documentation can be found at `/api/v1/docs` route in your web browser

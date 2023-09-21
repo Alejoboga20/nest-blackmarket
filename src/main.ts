@@ -11,6 +11,8 @@ enum ApiVersion {
   V1 = 'api/v1',
 }
 
+const DOCUMENTATION_PATH = `${ApiVersion.V1}/docs`;
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
@@ -19,7 +21,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe(validationPipeOptions));
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup(ApiVersion.V1, app, document);
+  SwaggerModule.setup(DOCUMENTATION_PATH, app, document);
 
   await app.listen(3000);
 }
