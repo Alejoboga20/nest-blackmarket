@@ -11,7 +11,7 @@ import {
 } from 'class-validator';
 import { strongPasswordOptions } from '@src/common/helpers/strongPasswordOptions';
 import { userMessages } from '@src/common/constants/messages';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -33,11 +33,10 @@ export class CreateUserDto {
   @MinLength(3)
   name: string;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: 'John Doe',
     title: 'User Nickname',
     description: 'Nickname of the user',
-    required: false,
   })
   @IsString()
   @MinLength(3)
@@ -70,20 +69,18 @@ export class CreateUserDto {
   })
   birthDate: Date;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: 'this_is_my_picture.png',
     title: 'User Profile Picture',
     description: 'Profile picture of the user',
-    required: false,
   })
   @IsOptional()
   profilePicture?: string;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: true,
     title: 'User Notifications Enabled',
     description: 'Notifications enabled',
-    required: false,
   })
   @IsOptional()
   @IsBoolean()

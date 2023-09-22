@@ -7,14 +7,14 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { Sorting } from '../types/pagination';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class PaginationDto {
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: 10,
     title: 'Limit',
     description: 'Amount of items per page',
-    required: true,
+    default: 10,
   })
   @Type(() => Number)
   @IsNumber()
@@ -23,11 +23,11 @@ export class PaginationDto {
   @IsOptional()
   limit?: number;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: 5,
     title: 'Offset',
     description: 'Amount of items to skip',
-    required: true,
+    default: 0,
   })
   @Type(() => Number)
   @IsNumber()
@@ -36,11 +36,11 @@ export class PaginationDto {
   @IsOptional()
   offset?: number;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: 5,
     title: 'Sorting',
     description: 'Order of the items',
-    required: true,
+    default: Sorting.ASC,
   })
   @IsEnum(Sorting)
   @IsOptional()
