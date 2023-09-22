@@ -1,9 +1,11 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
+  IsArray,
   IsEnum,
   IsInt,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsPositive,
   IsString,
   Min,
@@ -63,4 +65,17 @@ export class CreateProductDto {
   @IsString()
   @IsEnum(ProductState)
   state: ProductState;
+
+  @ApiPropertyOptional({
+    example: [
+      '335f1a60-928a-46e0-982e-729e084d7430',
+      '1fcebb69-583f-4ccd-9597-b4a8cb0e0258',
+    ],
+    title: 'Product Categories',
+    description: 'categories of the product',
+  })
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  categories?: string[];
 }

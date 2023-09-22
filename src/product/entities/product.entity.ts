@@ -1,7 +1,8 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, ManyToMany } from 'typeorm';
 
 import { ProductState } from '../types/product';
 import { BaseEntity } from '../../common/entities/base.entity';
+import { Category } from '@category/entities/category.entity';
 
 @Entity('products')
 export class Product extends BaseEntity {
@@ -19,4 +20,9 @@ export class Product extends BaseEntity {
 
   @Column({ type: 'enum', enum: ProductState })
   state: ProductState;
+
+  @ManyToMany(() => Category, (category) => category.products, {
+    eager: true,
+  })
+  categories: Category[];
 }
