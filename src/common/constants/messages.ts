@@ -13,3 +13,7 @@ export const userMessages = {
   BIRTH_DATE_VALIDATION_MESSAGE:
     'Birth date must be a valid date with the format YYYY-MM-DD',
 };
+
+export const categoryMessages = {
+  CATEGORY_NOT_FOUND: 'Category not found',
+};
