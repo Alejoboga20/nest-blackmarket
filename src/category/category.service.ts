@@ -1,9 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { FindOptionsWhere } from 'typeorm';
 
 import { categoryMessages } from '@common/constants/messages';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CategoryRepository } from './repositories/category.repository';
+import { Category } from './entities/category.entity';
 
 @Injectable()
 export class CategoryService {
@@ -22,6 +24,19 @@ export class CategoryService {
       throw new BadRequestException(categoryMessages.CATEGORY_NOT_FOUND);
 
     return category;
+  }
+
+  async findBatch(ids: string[]): Promise<Category[]> {
+    try {
+      const categories = await this.categoryRepository.find({
+        where: [...ids.map<FindOptionsWhere<Category>>((id) => ({ id: id }))],
+      });
+      const filteredCategories = categories.filter((category) => !!category);
+
+      return filteredCategories;
+    } catch (error) {
+      throw new BadRequestException(error.detail);
+    }
   }
 
   async create(createCategoryDto: CreateCategoryDto) {
