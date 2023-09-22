@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEnum,
   IsInt,
@@ -8,7 +9,6 @@ import {
   Min,
 } from 'class-validator';
 import { ProductState } from '../types/product';
-import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateProductDto {
   @ApiProperty({

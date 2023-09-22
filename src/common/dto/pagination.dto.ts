@@ -1,3 +1,4 @@
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsEnum,
   IsInt,
@@ -7,7 +8,6 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { Sorting } from '../types/pagination';
-import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class PaginationDto {
   @ApiPropertyOptional({

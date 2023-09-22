@@ -1,3 +1,4 @@
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   IsBoolean,
@@ -11,7 +12,6 @@ import {
 } from 'class-validator';
 import { strongPasswordOptions } from '@src/common/helpers/strongPasswordOptions';
 import { userMessages } from '@src/common/constants/messages';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateUserDto {
   @ApiProperty({
