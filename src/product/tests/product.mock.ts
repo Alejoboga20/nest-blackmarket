@@ -25,6 +25,7 @@ export const mockProduct: Product = {
   unitPrice: faker.number.int({ min: 1, max: 100 }),
   createdAt: new Date(),
   updatedAt: new Date(),
+  categories: [],
 };
 
 export const createProductDto: CreateProductDto = {
