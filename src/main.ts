@@ -5,13 +5,9 @@ import { TransformInterceptor } from '@common/interceptors/transform.interceptor
 import { SwaggerModule } from '@nestjs/swagger';
 
 import { swaggerConfig, validationPipeOptions } from '@common/config';
+import { ApiVersion } from '@common/constants/versions';
+import { DOCUMENTATION_PATH } from '@common/constants/paths';
 import { AppModule } from './app.module';
-
-enum ApiVersion {
-  V1 = 'api/v1',
-}
-
-const DOCUMENTATION_PATH = `${ApiVersion.V1}/docs`;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
