@@ -1,8 +1,8 @@
 import { Column, Entity, ManyToMany } from 'typeorm';
 
+import { Category } from '@category/entities/category.entity';
 import { ProductState } from '../types/product';
 import { BaseEntity } from '../../common/entities/base.entity';
-import { Category } from '@category/entities/category.entity';
 
 @Entity('products')
 export class Product extends BaseEntity {
