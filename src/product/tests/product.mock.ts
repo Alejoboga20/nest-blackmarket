@@ -7,7 +7,7 @@ import { CreateProductDto, UpdateProductDto } from '@product/dto';
 import { ProductState } from '@product/types/product';
 import { Product } from '@product/entities/product.entity';
 
-export const mockRepository = {
+export const mockProductRepository = {
   findOneBy: jest.fn(),
   find: jest.fn(),
   create: jest.fn(),
@@ -25,6 +25,7 @@ export const mockProduct: Product = {
   unitPrice: faker.number.int({ min: 1, max: 100 }),
   createdAt: new Date(),
   updatedAt: new Date(),
+  categories: [],
 };
 
 export const createProductDto: CreateProductDto = {
@@ -33,6 +34,7 @@ export const createProductDto: CreateProductDto = {
   state: faker.helpers.enumValue(ProductState),
   numAvailableItems: faker.number.int({ min: 1, max: 100 }),
   unitPrice: faker.number.int({ min: 1, max: 100 }),
+  categories: [],
 };
 
 export const updateProductDto: UpdateProductDto = {
@@ -41,6 +43,7 @@ export const updateProductDto: UpdateProductDto = {
   state: ProductState.N,
   numAvailableItems: faker.number.int({ min: 1, max: 100 }),
   unitPrice: faker.number.int({ min: 1, max: 100 }),
+  categories: [],
 };
 
 export const paginationDto: PaginationDto = {

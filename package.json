@@ -91,7 +91,10 @@
     "moduleNameMapper": {
       "^@src/(.*)$": "<rootDir>/$1",
       "^@common/(.*)$": "<rootDir>/common/$1",
-      "^@product/(.*)$": "<rootDir>/product/$1"
+      "^@auth/(.*)$": "<rootDir>/auth/$1",
+      "^@user/(.*)$": "<rootDir>/user/$1",
+      "^@product/(.*)$": "<rootDir>/product/$1",
+      "^@category/(.*)$": "<rootDir>/category/$1"
     }
   }
 }

@@ -9,12 +9,16 @@ import { validate as isUUID } from 'uuid';
 import { CreateProductDto, UpdateProductDto } from '@product/dto';
 import { Product } from '@product/entities/product.entity';
 import { ProductRepository } from '@product/repositories/product.repository';
+import { CategoryService } from '@category/category.service';
 import { PaginationDto } from '@common/dto/pagination.dto';
 import { ErrorCodes } from '@common/types/error';
 
 @Injectable()
 export class ProductService {
-  constructor(private readonly productRepository: ProductRepository) {}
+  constructor(
+    private readonly productRepository: ProductRepository,
+    private readonly categoryService: CategoryService,
+  ) {}
 
   async findOne(searchTerm: string): Promise<Product> {
     let product: Product;
@@ -44,14 +48,19 @@ export class ProductService {
 
       return products;
     } catch (error) {
-      console.log({ error });
       this.handleDbError(error);
     }
   }
 
   async create(createProductDto: CreateProductDto): Promise<Product> {
+    const { categories, ...productRest } = createProductDto;
+    const categoriesEntities = await this.categoryService.findBatch(categories);
+
     try {
-      const product = this.productRepository.create(createProductDto);
+      const product = this.productRepository.create({
+        ...productRest,
+        categories: categoriesEntities,
+      });
       await this.productRepository.save(product);
 
       return product;
@@ -64,16 +73,22 @@ export class ProductService {
     id: string,
     updateProductDto: UpdateProductDto,
   ): Promise<Product> {
-    const product = await this.productRepository.preload({
+    const { categories = [], ...productRest } = updateProductDto;
+
+    const product = await this.findOne(id);
+    const categoriesEntities = await this.categoryService.findBatch(categories);
+
+    const productToUpdate = await this.productRepository.preload({
       id,
-      ...updateProductDto,
+      categories:
+        categoriesEntities.length > 0 ? categoriesEntities : product.categories,
+      ...productRest,
     });
 
-    if (!product) throw new NotFoundException();
-
     try {
-      await this.productRepository.save(product);
-      return product;
+      const updatedProduct = await this.productRepository.save(productToUpdate);
+
+      return updatedProduct;
     } catch (error) {
       this.handleDbError(error);
     }
