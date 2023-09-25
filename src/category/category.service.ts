@@ -15,9 +15,8 @@ import { Category } from './entities/category.entity';
 export class CategoryService {
   constructor(private readonly categoryRepository: CategoryRepository) {}
 
-  async findAll() {
-    const categories = await this.categoryRepository.find();
-    return categories;
+  findAll() {
+    return this.categoryRepository.find();
   }
 
   async findOne(id: string) {
@@ -53,12 +52,17 @@ export class CategoryService {
   }
 
   async update(id: string, updateCategoryDto: UpdateCategoryDto) {
-    const category = await this.categoryRepository.updateCategory(
+    const category = await this.findOne(id);
+
+    if (!category)
+      throw new NotFoundException(categoryMessages.CATEGORY_NOT_FOUND);
+
+    const updatedCategory = await this.categoryRepository.updateCategory(
       id,
       updateCategoryDto,
     );
 
-    return category;
+    return updatedCategory;
   }
 
   async remove(id: string) {

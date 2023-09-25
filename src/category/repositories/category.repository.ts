@@ -2,12 +2,10 @@ import {
   BadRequestException,
   Injectable,
   InternalServerErrorException,
-  NotFoundException,
 } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 
 import { ErrorCodes } from '@common/types/error';
-import { categoryMessages } from '@common/constants/messages';
 import { Category } from '../entities/category.entity';
 import { CreateCategoryDto } from '../dto/create-category.dto';
 import { UpdateCategoryDto } from '../dto/update-category.dto';
@@ -31,9 +29,6 @@ export class CategoryRepository extends Repository<Category> {
 
   async updateCategory(id: string, updateCategoryDto: UpdateCategoryDto) {
     const category = await this.preload({ id, ...updateCategoryDto });
-
-    if (!category)
-      throw new NotFoundException(categoryMessages.CATEGORY_NOT_FOUND);
 
     try {
       await this.save(category);
