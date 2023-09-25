@@ -1,5 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { FindOptionsWhere } from 'typeorm';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { In } from 'typeorm';
 
 import { categoryMessages } from '@common/constants/messages';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -21,7 +25,7 @@ export class CategoryService {
       where: { id },
     });
     if (!category)
-      throw new BadRequestException(categoryMessages.CATEGORY_NOT_FOUND);
+      throw new NotFoundException(categoryMessages.CATEGORY_NOT_FOUND);
 
     return category;
   }
@@ -29,7 +33,8 @@ export class CategoryService {
   async findBatch(ids: string[]): Promise<Category[]> {
     try {
       const categories = await this.categoryRepository.find({
-        where: [...ids.map<FindOptionsWhere<Category>>((id) => ({ id: id }))],
+        //where: [...ids.map<FindOptionsWhere<Category>>((id) => ({ id: id }))],
+        where: { id: In(ids) },
       });
       const filteredCategories = categories.filter((category) => !!category);
 
