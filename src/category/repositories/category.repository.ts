@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 
@@ -32,7 +33,7 @@ export class CategoryRepository extends Repository<Category> {
     const category = await this.preload({ id, ...updateCategoryDto });
 
     if (!category)
-      throw new BadRequestException(categoryMessages.CATEGORY_NOT_FOUND);
+      throw new NotFoundException(categoryMessages.CATEGORY_NOT_FOUND);
 
     try {
       await this.save(category);
@@ -42,7 +43,7 @@ export class CategoryRepository extends Repository<Category> {
     }
   }
 
-  private handleDbError(error: any) {
+  private handleDbError(error: Error & { code: string } & { detail: string }) {
     if (error.code === ErrorCodes.DUPLICATED_ENTITY) {
       throw new BadRequestException(error.detail);
     }
