@@ -8,7 +8,7 @@ import { Sorting } from '../../common/types/pagination';
 import { ProductState } from '../types/product';
 import { UpdateProductDto } from '../dto';
 import { ProductRepository } from '../repositories/product.repository';
-import { mockRepository } from './product.mock';
+import { mockProductRepository } from './product.mock';
 
 describe('ProductController', () => {
   let controller: ProductController;
@@ -29,7 +29,7 @@ describe('ProductController', () => {
           provide: ProductService,
           useValue: mockService,
         },
-        { provide: ProductRepository, useValue: mockRepository },
+        { provide: ProductRepository, useValue: mockProductRepository },
       ],
     }).compile();
 

@@ -48,7 +48,6 @@ export class ProductService {
 
       return products;
     } catch (error) {
-      console.log({ error });
       this.handleDbError(error);
     }
   }
@@ -88,6 +87,7 @@ export class ProductService {
 
     try {
       const updatedProduct = await this.productRepository.save(productToUpdate);
+
       return updatedProduct;
     } catch (error) {
       this.handleDbError(error);

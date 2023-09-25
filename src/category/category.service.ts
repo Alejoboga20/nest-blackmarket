@@ -32,7 +32,6 @@ export class CategoryService {
   async findBatch(ids: string[]): Promise<Category[]> {
     try {
       const categories = await this.categoryRepository.find({
-        //where: [...ids.map<FindOptionsWhere<Category>>((id) => ({ id: id }))],
         where: { id: In(ids) },
       });
       const filteredCategories = categories.filter((category) => !!category);
