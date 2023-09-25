@@ -1,5 +1,7 @@
-import { CreateCategoryDto } from '../dto/create-category.dto';
+import { v4 as uuid } from 'uuid';
 import { faker } from '@faker-js/faker';
+
+import { CreateCategoryDto } from '../dto/create-category.dto';
 import { UpdateCategoryDto } from '../dto/update-category.dto';
 
 export const categoryServiceMock = {
@@ -11,6 +13,12 @@ export const categoryServiceMock = {
   remove: jest.fn(),
 };
 
+export const categoryRepositoryMock = {
+  find: jest.fn(),
+  findOne: jest.fn(),
+  createCategory: jest.fn(),
+};
+
 export const createCategoryDtoMock: CreateCategoryDto = {
   name: faker.commerce.productAdjective(),
   description: faker.commerce.productDescription(),
@@ -19,3 +27,21 @@ export const createCategoryDtoMock: CreateCategoryDto = {
 export const updateCategoryDtoMock: UpdateCategoryDto = {
   description: faker.commerce.productDescription(),
 };
+
+export const findCategoriesMock = [
+  {
+    id: uuid(),
+    name: 'Second Category Name',
+    description: 'Category Description',
+  },
+  {
+    id: uuid(),
+    name: 'Third Category Name',
+    description: 'Category Description',
+  },
+  {
+    id: uuid(),
+    name: 'Fourth Category Name',
+    description: 'Category Description',
+  },
+];
