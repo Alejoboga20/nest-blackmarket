@@ -18,6 +18,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CategoryDescription } from './decorators/category-description.decorator';
 
 @ApiTags('Category')
+@UseGuards(JwtAuthGuard)
 @Controller('category')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
@@ -35,14 +36,12 @@ export class CategoryController {
   }
 
   @CategoryDescription('create')
-  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.categoryService.create(createCategoryDto);
   }
 
   @CategoryDescription('update')
-  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(
     @Param('id', ParseUUIDPipe) id: string,
@@ -52,7 +51,6 @@ export class CategoryController {
   }
 
   @CategoryDescription('delete')
-  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.categoryService.remove(id);
