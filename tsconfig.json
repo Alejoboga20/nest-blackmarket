@@ -20,6 +20,7 @@
     "paths": {
       "@src/*": ["src/*"],
       "@common/*": ["src/common/*"],
+      "@db/*": ["src/db/*"],
       "@auth/*": ["src/auth/*"],
       "@user/*": ["src/user/*"],
       "@product/*": ["src/product/*"],
