@@ -2,14 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-interface EnvironmentVariables {
-  ENVIRONMENT: Environment;
-  DB_AUTOLOADENTITIES: boolean;
-  DB_SYNCHRONIZE: boolean;
-  DB_MIGRATIONS_RUN: boolean;
-}
-
-type Environment = 'development' | 'production' | 'test' | 'debug';
+import { EnvironmentVariables } from '@common/config/environment.variables';
 
 @Module({
   imports: [
