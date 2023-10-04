@@ -17,18 +17,18 @@ export class UserRole implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    const validroles = this.reflector.get<string[]>(
+    const validRoles = this.reflector.get<string[]>(
       META_ROLES,
       context.getHandler(),
     );
 
-    if (!validroles) return true;
+    if (!validRoles) return true;
 
     const request = context.switchToHttp().getRequest();
     const user: User = request.user;
 
     for (const role of user.roles) {
-      if (validroles.includes(role)) return true;
+      if (validRoles.includes(role)) return true;
     }
 
     throw new UnauthorizedException('Unauthorized');
