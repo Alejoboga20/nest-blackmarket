@@ -1,7 +1,8 @@
 import { BeforeInsert, Column, Entity } from 'typeorm';
-
-import { BaseEntity } from '@src/common/entities/base.entity';
 import { Exclude } from 'class-transformer';
+
+import { BaseEntity } from '@common/entities/base.entity';
+import { UserRoles } from '../enums/user-roles.enum';
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -26,6 +27,14 @@ export class User extends BaseEntity {
 
   @Column({ type: 'text', name: 'notifications_enabled', default: false })
   notificationsEnabled: boolean;
+
+  @Column({
+    type: 'enum',
+    enum: UserRoles,
+    array: true,
+    default: [UserRoles.USER],
+  })
+  roles: UserRoles[];
 
   @BeforeInsert()
   createNickname() {
